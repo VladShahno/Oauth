@@ -13,7 +13,6 @@ import {UserHomeComponent} from './component/user-home/user-home.component';
 import {RecaptchaFormsModule, RecaptchaModule} from 'ng-recaptcha';
 import {KeycloakAngularModule, KeycloakService} from "keycloak-angular";
 import {initializeKeycloak} from "./init/keycloak-init.factory";
-import {UserRegistrationComponent} from "./component/user-registration/user-registration.component";
 
 @NgModule({
   declarations: [
@@ -21,8 +20,7 @@ import {UserRegistrationComponent} from "./component/user-registration/user-regi
     UserListComponent,
     CreateUserComponent,
     UpdateUserComponent,
-    UserHomeComponent,
-    UserRegistrationComponent
+    UserHomeComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +30,7 @@ import {UserRegistrationComponent} from "./component/user-registration/user-regi
     FormsModule,
     RecaptchaModule,
     RecaptchaFormsModule,
-    KeycloakAngularModule
+    KeycloakAngularModule,
   ],
   providers: [UserService,
     {

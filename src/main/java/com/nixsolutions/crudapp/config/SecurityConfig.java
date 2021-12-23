@@ -37,8 +37,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final String jwkProviderUrl = "http://localhost:8080/auth/realms/oauth/protocol/openid-connect/certs";
 
-    private final String nonSecureUrl = "registration";
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -62,11 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 BasicAuthenticationFilter.class);
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(nonSecureUrl);
     }
 
     @ConditionalOnMissingBean

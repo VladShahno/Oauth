@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {UserService} from "./service/user.service";
 import {UserForCreate} from "./model/user-models/user-for-create";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,7 @@ export class AppComponent {
 
   user: UserForCreate = new UserForCreate();
 
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService, public cookie: CookieService) {
   }
 
   ngOnInit(): void {
@@ -33,5 +34,9 @@ export class AppComponent {
 
   canBeShowed() {
     return this.userService.loggedIn() && localStorage.getItem('role') == "ADMIN";
+  }
+
+  logout() {
+    this.cookie.deleteAll('/', 'localhost');
   }
 }
