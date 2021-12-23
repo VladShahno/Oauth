@@ -1,0 +1,52 @@
+version: "3"
+services:
+
+  db:
+    container_name: shakhno-db
+    image: buildo/h2database
+    hostname: shakhno-h2
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./DDL_Docker.sql:/docker-entrypoint-initdb.d/DDL_Docker.sql
+    restart: always
+
+  backend:
+    build: .
+    ports:
+      - 9000:8080
+    environment:
+      - APP_NAME=oauth-app
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=test
+    depends_on:
+      - keycloak
+
+  front:
+    build: angular-app
+    depends_on:
+      - backend
+    environment:
+      - KEYCLOAK_URL=http://localhost:8080
+      - KEYCLOAK_REALM=test
+      - KEYCLOAK_CLIENT_ID=frontend
+    ports:
+      - 4200:4200
+
+  keycloak:
+    image: jboss/keycloak:11.0.2
+    container_name: keycloak
+    ports:
+      - 8080:8080
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - DB_USER=
+      - DB_PASSWORD=
+      # - KEYCLOAK_IMPORT=/tmp/realm-test.json
+    volumes:
+      - ./:/temp
+      # - ./infra/keycloak/realm-test.json:/tmp/realm-test.json
+    # command: ["-Dkeycloak.profile.feature.upload_scripts=enabled"]
+    depends_on:
+      - db
