@@ -5,18 +5,19 @@ import {
   Router,
   RouterStateSnapshot
 } from '@angular/router';
+import {KeycloakService} from "keycloak-angular";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminGuard implements CanActivate {
-  constructor(private router: Router) {
+  constructor(private router: Router, private keycloak: KeycloakService) {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const currentRole = localStorage.getItem('role')?.includes('ADMIN');
-    if (currentRole && localStorage.getItem('jwtToken')) {
+    let role = this.keycloak.getUserRoles().filter(userRole => 'ADMIN' === userRole);
+    if (role) {
       return true;
     } else {
       this.router.navigate(['/home']);

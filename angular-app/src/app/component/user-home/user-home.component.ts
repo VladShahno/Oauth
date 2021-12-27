@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from "../../service/user.service";
 import {UserForCreate} from "../../model/user-models/user-for-create";
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-user-home',
@@ -11,21 +11,13 @@ export class UserHomeComponent implements OnInit {
 
   role = localStorage.getItem('role');
 
-  login = localStorage.getItem('user');
-
-  UserName: string = '';
+  userName = this.keycloak.getUsername().toString();
 
   user: UserForCreate = new UserForCreate();
 
-  constructor(private userService: UserService) {
+  constructor(private keycloak: KeycloakService) {
   }
 
   ngOnInit(): void {
-    if (typeof this.login === "string") {
-      this.userService.getUserByLogin(this.login).subscribe(data => {
-        this.user = data;
-        this.UserName = this.user.firstName;
-      }, error => console.log(error));
-    }
   }
 }

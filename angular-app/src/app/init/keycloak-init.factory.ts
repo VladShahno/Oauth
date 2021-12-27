@@ -10,6 +10,7 @@ export function initializeKeycloak(
         realm: 'oauth',
         clientId: 'front-angular',
       },
+      loadUserProfileAtStartUp: true,
       initOptions: {
         onLoad: 'login-required',
         checkLoginIframe: true

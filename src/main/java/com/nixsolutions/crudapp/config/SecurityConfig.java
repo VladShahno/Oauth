@@ -16,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -52,7 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     return corsConfiguration;
                 }).and().headers().httpStrictTransportSecurity().disable().and().csrf()
-                .disable().authorizeRequests().anyRequest().permitAll();
+                .disable().authorizeRequests().antMatchers("users/**")
+                .hasRole("ADMIN").anyRequest().authenticated();
+
         http.addFilterBefore(
                 new AccessTokenFilter(jwtTokenValidator(keycloakJwkProvider()),
                         authenticationManagerBean(),

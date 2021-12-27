@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {UserService} from "./service/user.service";
 import {UserForCreate} from "./model/user-models/user-for-create";
-import {CookieService} from "ngx-cookie-service";
+import {KeycloakService} from "keycloak-angular";
 
 @Component({
   selector: 'app-root',
@@ -11,32 +11,24 @@ import {CookieService} from "ngx-cookie-service";
 export class AppComponent {
   title = 'angular-app';
 
-  role = localStorage.getItem('role');
+  role = this.keycloak.getUserRoles().filter(userRole => 'ADMIN' === userRole ||
+    'USER' === userRole).toString();
 
-  login = localStorage.getItem('user');
-
-  UserName: string = '';
+  userName = this.keycloak.getUsername().toString();
 
   user: UserForCreate = new UserForCreate();
 
-  constructor(public userService: UserService, public cookie: CookieService) {
+  constructor(public userService: UserService, private keycloak: KeycloakService) {
   }
 
   ngOnInit(): void {
-
-    if (typeof this.login === "string") {
-      this.userService.getUserByLogin(this.login).subscribe(data => {
-        this.user = data;
-        this.UserName = this.user.firstName;
-      }, error => console.log(error));
-    }
   }
 
-  canBeShowed() {
-    return this.userService.loggedIn() && localStorage.getItem('role') == "ADMIN";
+  canBeShowedForAdmin() {
+    return this.role == "ADMIN";
   }
 
-  logout() {
-    this.cookie.deleteAll('/', 'localhost');
+  canBeShowedForUser() {
+    return this.role == "USER";
   }
 }

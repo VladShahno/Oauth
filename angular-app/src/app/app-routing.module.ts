@@ -5,16 +5,17 @@ import {CreateUserComponent} from "./component/create-user/create-user.component
 import {UpdateUserComponent} from "./component/update-user/update-user.component";
 import {UserHomeComponent} from "./component/user-home/user-home.component";
 import {AuthGuard} from "./component/page-guard/AuthGuard";
+import {AdminGuard} from "./component/page-guard/admin-guard";
 
 const routes: Routes = [
   {
     path: 'users/all',
-    component: UserListComponent
+    component: UserListComponent, canActivate: [AuthGuard]
   },
   {
     path: 'users/new',
     component: CreateUserComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AdminGuard]
   },
   {
     path: 'users/update/:login',

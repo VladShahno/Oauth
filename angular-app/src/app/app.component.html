@@ -2,25 +2,30 @@
   <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
     <ul class="nav">
       <li class="nav-item">
-        <a  routerLink="users/all"
+        <a *ngIf="canBeShowedForAdmin()" routerLink="users/all"
            routerLinkActive="active"
            class="nav-link">Home</a>
       </li>
       <li class="nav-item">
-        <a  routerLink="users/new"
+        <a *ngIf="canBeShowedForUser()" routerLink="home"
+           routerLinkActive="active"
+           class="nav-link">Home</a>
+      </li>
+      <li class="nav-item">
+        <a *ngIf="canBeShowedForAdmin()" routerLink="users/new"
            routerLinkActive="active" class="nav-link">Add
           User</a>
       </li>
       <li class="nav-item">
-        <a  (click)="userService.keycloakLogout()" routerLink
-         routerLinkActive="active"
+        <a (click)="userService.keycloakLogout()" routerLink
+           routerLinkActive="active"
            class="nav-link">Logout</a>
       </li>
     </ul>
   </nav>
   <div style=" margin-left: 10px;padding-top: 10px; float: left;">
     <p style="text-align: left">
-      <mark>{{role}} {{UserName}}</mark>
+      <mark>{{role}} {{userName}}</mark>
     </p>
   </div>
 </div>

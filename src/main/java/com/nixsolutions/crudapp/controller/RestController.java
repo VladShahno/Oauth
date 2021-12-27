@@ -36,9 +36,6 @@ public class RestController implements Controller {
     @Autowired
     private UserMapper userMapper;
 
-    public RestController() {
-    }
-
     @POST
     @AllowedRoles("ADMIN")
     public Response postCreate(@Valid UserDtoForCreate userDtoForCreate) {
